@@ -1,0 +1,8 @@
+body { font-family: Arial, sans-serif; margin: 2rem; background: #4ea1c2;
+    background: linear-gradient(90deg,rgba(78, 161, 194, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(237, 221, 83, 1) 100%);}
+h1 { color: #2c3e50; }
+section { margin-bottom: 1.5rem; }
+form input { margin-right: 0.5rem; }
+button { cursor: pointer; }
+ul { list-style: none; padding: 0; }
+li { margin-bottom: 0.5rem; }

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Controle de Estoque</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>📦 Inventário</h1>
+
+    <section>
+        <h2>➕ Adicionar Produto</h2>
+        <form action="/add" method="POST">
+            <input type="text" name="name" placeholder="Nome" required>
+            <input type="number" name="quantity" placeholder="Quantidade" required>
+            <input type="number" name="min_stock" placeholder="Estoque Mínimo" required>
+            <button type="submit">Adicionar</button>
+        </form>
+    </section>
+
+    <section>
+        <h2>📝 Produtos Cadastrados</h2>
+        <ul>
+        {% for id, name, qty, min_stock in inventory %}
+            <li>
+                <strong>{{ name }}</strong> — Qtd: {{ qty }} (Mín: {{ min_stock }})
+                <form action="/update" method="POST" style="display:inline;">
+                    <input type="hidden" name="id" value="{{ id }}">
+                    <input type="number" name="quantity" placeholder="Nova Qtd" required>
+                    <button type="submit">Atualizar</button>
+                </form>
+                <form action="/sell" method="POST" style="display:inline; margin-left: 8px;">
+                    <input type="hidden" name="id" value="{{ id }}">
+                    <input type="number" name="quantity" placeholder="Qtd Venda" required>
+                    <button type="submit">Vender</button>
+                </form>
+                <form action="/delete" method="POST" style="display:inline; margin-left: 8px;">
+                    <input type="hidden" name="id" value="{{ id }}">
+                    <button type="submit">Excluir</button>
+                </form>
+            </li>
+        {% endfor %}
+        </ul>
+    </section>
+
+    <section>
+        <h2>⚠️ Alertas de Estoque Baixo</h2>
+        <ul>
+        {% for name, qty, min_stock in alerts %}
+            <li><strong>{{ name }}</strong> com {{ qty }} unidades (mín {{ min_stock }})</li>
+        {% else %}
+            <li>— Nenhum alerta no momento —</li>
+        {% endfor %}
+        </ul>
+    </section>
+
+    <section>
+        <h2>📊 Relatórios e Recomendações</h2>
+        <a href="/report?days=30">Ver Relatório (30 dias)</a>
+        <a href="/recommend">Recomendar Reposição</a>
+    </section>
+
+    <!-- Fornecedores -->
+    <section>
+        <h2>🚚 Fornecedores</h2>
+        <form action="/supplier/add" method="POST">
+          <input type="text" name="sup_name" placeholder="Nome" required>
+          <input type="email" name="sup_email" placeholder="Email" required>
+          <input type="text" name="sup_phone" placeholder="Telefone" required>
+          <button type="submit">Adicionar Fornecedor</button>
+        </form>
+        <ul>
+          {% for id, name, email, phone in suppliers %}
+            <li>
+              <strong>{{ name }}</strong> ({{ email }}, {{ phone }})
+              <form action="/supplier/message" method="POST" style="display:inline">
+                <input type="hidden" name="sup_id" value="{{ id }}">
+                <input type="text" name="message" placeholder="Conteúdo da mensagem" required>
+                <button type="submit">Enviar Pedido</button>
+              </form>
+            </li>
+          {% endfor %}
+        </ul>
+
+    
+</body>
+</html>
